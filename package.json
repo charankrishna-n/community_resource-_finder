@@ -1,0 +1,11 @@
+{
+  "name": "community-resource-finder",
+  "version": "1.0.0",
+  "description": "Community Resource Finder – A Digital Platform for Locating Essential Public Services",
+  "scripts": {
+    "install:all": "cd client && npm install --legacy-peer-deps && cd ../server && npm install",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && node index.js",
+    "dev": "start cmd /k \"cd client && npm run dev\" && start cmd /k \"cd server && node index.js\""
+  }
+}
