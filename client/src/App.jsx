@@ -11,7 +11,7 @@ import MapPage from "./pages/MapPage";
 // Protect admin route — redirect to login if not admin
 function AdminRoute() {
   const { currentUser } = useApp();
-  if (!currentUser) return <Navigate to="/login" replace />;
+  if (!currentUser) return <Navigate to="/login?role=admin" replace />;
   if (currentUser.role !== "admin") return <Navigate to="/map" replace />;
   return <AdminDashboard />;
 }
@@ -19,7 +19,7 @@ function AdminRoute() {
 // Protect map route — redirect to login if not logged in
 function MapRoute() {
   const { currentUser } = useApp();
-  if (!currentUser) return <Navigate to="/login" replace />;
+  if (!currentUser) return <Navigate to="/login?role=user" replace />;
   return <MapPage />;
 }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link, useLocation, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMail, FiLock, FiArrowRight, FiShield, FiUser, FiAlertCircle, FiEye, FiEyeOff } from "react-icons/fi";
 import { useApp } from "../utils/AppContext";
@@ -27,8 +27,17 @@ export default function LoginPage() {
   const { login, currentUser } = useApp();
   const navigate = useNavigate();
 
-  const { state } = useLocation();
-  const [activeTab, setActiveTab] = useState(state?.tab || "user");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const roleParam = searchParams.get("role");
+  const activeTab = roleParam || "user";
+  const isRoleSelected = !!roleParam;
+
+  const setActiveTab = (tabId) => {
+    setSearchParams({ role: tabId });
+    setForm({ email: "", password: "" });
+    setError("");
+  };
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +64,7 @@ export default function LoginPage() {
     );
   }
 
-  const tab = TABS.find((t) => t.id === activeTab);
+  const tab = TABS.find((t) => t.id === activeTab) || TABS[0];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,22 +103,24 @@ export default function LoginPage() {
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex bg-slate-100 rounded-2xl p-1 mb-6">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => { setActiveTab(t.id); setForm({ email: "", password: "" }); setError(""); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                activeTab === t.id
-                  ? "bg-white text-slate-800 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              <t.icon size={15} />
-              {t.label}
-            </button>
-          ))}
-        </div>
+        {!isRoleSelected && (
+          <div className="flex bg-slate-100 rounded-2xl p-1 mb-6">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => { setActiveTab(t.id); setForm({ email: "", password: "" }); setError(""); }}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  activeTab === t.id
+                    ? "bg-white text-slate-800 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                <t.icon size={15} />
+                {t.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Form Card */}
         <AnimatePresence mode="wait">
@@ -213,17 +224,19 @@ export default function LoginPage() {
           </motion.div>
         </AnimatePresence>
 
-        <p className="text-center text-xs text-slate-400 mt-5">
-          {activeTab === "user" ? (
-            <>Looking to manage resources?{" "}
-              <button onClick={() => setActiveTab("admin")} className="text-blue-500 hover:underline">Admin login →</button>
-            </>
-          ) : (
-            <>Just need to find help?{" "}
-              <button onClick={() => setActiveTab("user")} className="text-blue-500 hover:underline">User login →</button>
-            </>
-          )}
-        </p>
+        {!isRoleSelected && (
+          <p className="text-center text-xs text-slate-400 mt-5">
+            {activeTab === "user" ? (
+              <>Looking to manage resources?{" "}
+                <button onClick={() => setActiveTab("admin")} className="text-blue-500 hover:underline">Admin login →</button>
+              </>
+            ) : (
+              <>Just need to find help?{" "}
+                <button onClick={() => setActiveTab("user")} className="text-blue-500 hover:underline">User login →</button>
+              </>
+            )}
+          </p>
+        )}
       </motion.div>
     </div>
   );

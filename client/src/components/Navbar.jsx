@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX, FiGlobe, FiZap, FiUser, FiLogOut, FiShield, FiMap, FiChevronDown } from "react-icons/fi";
 import { useApp } from "../utils/AppContext";
@@ -19,6 +19,8 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const loginRole = searchParams.get("role");
 
   const handleLogout = () => {
     logout();
@@ -181,16 +183,22 @@ export default function Navbar() {
               /* Logged-out: two login buttons */
               <div className="flex items-center gap-2">
                 <Link
-                  to="/login"
-                  state={{ tab: "user" }}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-medium hover:bg-slate-50 transition-all"
+                  to="/login?role=user"
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
+                    pathname === "/login" && (!loginRole || loginRole === "user")
+                      ? "bg-blue-100 border-blue-300 text-blue-700 font-semibold"
+                      : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                  }`}
                 >
                   <FiUser size={13} /> User Login
                 </Link>
                 <Link
-                  to="/login"
-                  state={{ tab: "admin" }}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-slate-700 to-slate-900 text-white text-xs font-medium hover:shadow-lg transition-all"
+                  to="/login?role=admin"
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    pathname === "/login" && loginRole === "admin"
+                      ? "bg-slate-900 text-white ring-2 ring-slate-800 ring-offset-1 font-semibold"
+                      : "bg-gradient-to-r from-slate-700 to-slate-900 text-white hover:shadow-lg"
+                  }`}
                 >
                   <FiShield size={13} /> Admin Login
                 </Link>
@@ -258,16 +266,24 @@ export default function Navbar() {
                 ) : (
                   <div className="flex gap-2">
                     <Link
-                      to="/login"
+                      to="/login?role=user"
                       onClick={() => setMenuOpen(false)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border border-slate-200 text-slate-600 text-xs font-medium"
+                      className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border text-xs font-medium ${
+                        pathname === "/login" && (!loginRole || loginRole === "user")
+                          ? "bg-blue-100 border-blue-300 text-blue-700 font-semibold"
+                          : "border-slate-200 text-slate-600"
+                      }`}
                     >
                       <FiUser size={13} /> User Login
                     </Link>
                     <Link
-                      to="/login"
+                      to="/login?role=admin"
                       onClick={() => setMenuOpen(false)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-gradient-to-r from-slate-700 to-slate-900 text-white text-xs font-medium"
+                      className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium ${
+                        pathname === "/login" && loginRole === "admin"
+                          ? "bg-slate-900 text-white ring-2 ring-slate-800 ring-offset-1 font-semibold"
+                          : "bg-gradient-to-r from-slate-700 to-slate-900 text-white"
+                      }`}
                     >
                       <FiShield size={13} /> Admin Login
                     </Link>
