@@ -2,7 +2,7 @@
 
 > A Digital Platform for Locating Essential Public Services
 
-## Quick Start
+## Quick 
 
 ### 1. Start the Backend (Terminal 1)
 ```bash
