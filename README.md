@@ -4,7 +4,7 @@
 
 ## Quick 
 
-
+what is the leetcodes top 15 percentage
 
 ```bash
 cd server
