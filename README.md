@@ -4,7 +4,7 @@
 
 ## Quick 
 
-### 1. Start the Backend (Terminal )
+### 1. Start the Backend (Terminal 1)
 
 ```bash
 cd server
