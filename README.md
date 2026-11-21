@@ -4,7 +4,7 @@
 
 ## Quick 
 
-### 1. Start the Bactend (Terminal 2)
+### 1. Start the Backtend (Terminal 2)
 
 ```bash
 cd server
