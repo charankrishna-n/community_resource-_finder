@@ -4,7 +4,7 @@
 
 ## Quick 
 
-
+### 2. Start the Frontend (Terminal 2)
 
 ```bash
 cd server
