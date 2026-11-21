@@ -4,7 +4,7 @@
 
 ## Quick 
 
-### 1. Start the Brontend (Terminal 2)
+### 1. Start the Baontend (Terminal 2)
 
 ```bash
 cd server
